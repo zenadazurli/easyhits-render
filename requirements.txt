@@ -1,2 +1,2 @@
-cloakbrowser>=0.3.26
+cloakbrowser[geoip]>=0.3.26
 requests
