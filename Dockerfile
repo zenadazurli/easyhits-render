@@ -12,6 +12,16 @@ RUN apt-get update && apt-get install -y \
     libu2f-udev \
     libvulkan1 \
     libxkbcommon0 \
+    libglib2.0-0 \
+    libnss3 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxrandr2 \
+    libgbm-dev \
+    libpango-1.0-0 \
+    libcairo2 \
+    libatk-bridge2.0-0 \
+    libgtk-3-0 \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
