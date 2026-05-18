@@ -1,12 +1,11 @@
-# Usiamo un'immagine base Python, sufficientemente leggera
 FROM python:3.11-slim
 
-# 1. Aggiorniamo il sistema e installiamo le dipendenze necessarie per CloakBrowser
+# Installa Node.js e dipendenze di sistema
 RUN apt-get update && apt-get install -y \
+    curl \
     wget \
     gnupg \
     unzip \
-    curl \
     xvfb \
     libgbm1 \
     libasound2 \
@@ -14,17 +13,19 @@ RUN apt-get update && apt-get install -y \
     libu2f-udev \
     libvulkan1 \
     libxkbcommon0 \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
-# 2. Impostiamo la directory di lavoro
-WORKDIR /app
+# Installa cloakbrowser via npm (il binario stealth)
+RUN npm install -g cloakbrowser
 
-# 3. Copiamo e installiamo le dipendenze Python
+WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-
-# 4. Copiamo lo script Python
 COPY cookie_refresh.py .
 
-# 5. Comando per avviare lo script (Render lo eseguirà)
+# Assicuriamoci che il binario di cloakbrowser sia nel PATH
+ENV PATH="/usr/local/bin:${PATH}"
+
 CMD ["python", "cookie_refresh.py"]
