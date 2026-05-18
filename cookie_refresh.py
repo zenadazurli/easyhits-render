@@ -9,10 +9,11 @@ PASSWORD = "DDnmVV45!!"
 LOGIN_URL = "https://www.easyhits4u.com/logon/"
 
 def get_turnstile_token():
+    # geoip=False per evitare la dipendenza mancante (ma perdiamo un po' di stealth)
     browser = launch(
         proxy=PROXY,
         headless=True,
-        geoip=True,
+        geoip=False,
         humanize=True
     )
     page = browser.new_page()
@@ -40,6 +41,7 @@ def login_with_token(token):
     return session.cookies.get_dict().get("sesids"), session.cookies.get_dict().get("user_id")
 
 def main():
+    print("🔄 Avvio CloakBrowser...")
     token = get_turnstile_token()
     if not token:
         print("❌ Token non ottenuto")
